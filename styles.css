@@ -4,12 +4,7 @@ html, body {
   padding: 0;
 }
 
-/* Commented out the old background CSS rule */
-/*
-body {
-  background: linear-gradient(to bottom, #212121, #303030);
-}
-*/
+
 
 /* Header styles */
 header {
