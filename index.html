@@ -6,9 +6,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CS:GO Skin Emporium</title>
   <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+    }
+
+    #webgl-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: -1;
+    }
+  </style>
 </head>
 
 <body>
+  <canvas id="webgl-canvas"></canvas>
+
   <header>
     <div class="header-top">
       <div class="logo">
@@ -73,6 +88,74 @@
   <footer>
     <p>&copy; 2023 CS:GO Skin Emporium. All rights reserved.</p>
   </footer>
+
+  <script src="https://cdn.rawgit.com/mrdoob/three.js/r129/build/three.js"></script>
+  <script>
+    // Initialize WebGL renderer
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.getElementById('webgl-canvas').appendChild(renderer.domElement);
+
+    // Create scene
+    const scene = new THREE.Scene();
+
+    // Create camera
+    const camera = new THREE.PerspectiveCamera(
+      75,
+      window.innerWidth / window.innerHeight,
+      0.1,
+      1000
+    );
+    camera.position.z = 5;
+
+    // Create lava lamp geometry
+    const geometry = new THREE.SphereGeometry(1, 64, 64);
+
+    // Create lava lamp material
+    const material = new THREE.ShaderMaterial({
+      vertexShader: `
+        varying vec2 vUv;
+
+        void main() {
+          vUv = uv;
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+      `,
+      fragmentShader: `
+        varying vec2 vUv;
+
+        void main() {
+          vec2 p = vUv * 4.0 - 2.0;
+          float d = length(p);
+          vec3 color = vec3(0.0);
+
+          if (d < 1.0) {
+            float power = 4.0;
+            float displacement = 1.0 - pow(d, power);
+            color = vec3(displacement);
+          }
+
+          gl_FragColor = vec4(color, 1.0);
+        }
+      `,
+    });
+
+    // Create lava lamp mesh
+    const lavaLamp = new THREE.Mesh(geometry, material);
+    scene.add(lavaLamp);
+
+    // Render loop
+    function animate() {
+      requestAnimationFrame(animate);
+
+      lavaLamp.rotation.x += 0.01;
+      lavaLamp.rotation.y += 0.01;
+
+      renderer.render(scene, camera);
+    }
+
+    animate();
+  </script>
 </body>
 
 </html>
