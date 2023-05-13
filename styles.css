@@ -4,8 +4,6 @@ html, body {
   padding: 0;
 }
 
-
-
 /* Header styles */
 header {
   background-color: #000;
@@ -63,16 +61,4 @@ main {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-}
-
-
-.skin-card button:hover {
-  background-color: #555;
-}
-
-footer {
-  background-color: #333;
-  color: #fff;
-  padding: 20px;
-  text-align: center;
 }
