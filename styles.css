@@ -1,40 +1,53 @@
-/* Reset styles */
-html, body {
+body {
   margin: 0;
   padding: 0;
+  overflow: hidden;
 }
 
-/* Header styles */
-header {
-  background-color: #000;
-  padding: 10px;
-  color: #fff;
+.webgl-background {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 1;
+  height: 100%;
+  z-index: -1;
+  pointer-events: none;
 }
 
-/* Main styles */
-main {
-  margin-top: 80px;
-  padding: 20px;
+nav {
+  background-color: #000;
+  padding: 10px;
+  color: #fff;
 }
 
-/* Skins section styles */
-#skins {
+nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+}
+
+nav ul li {
+  margin: 0 10px;
+}
+
+header {
   text-align: center;
+  padding: 20px;
+  background-color: #f2f2f2;
+}
+
+#skins {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 
 .skin-card {
-  display: inline-block;
-  width: 300px;
-  margin: 20px;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
   text-align: center;
+  margin: 20px;
 }
 
 .skin-card img {
@@ -50,15 +63,21 @@ main {
 }
 
 .skin-card p {
-  margin: 5px 0;
+  color: #666;
 }
 
 .skin-card button {
-  margin-top: 10px;
-  padding: 5px 10px;
+  padding: 10px 20px;
   background-color: #000;
   color: #fff;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+}
+
+footer {
+  background-color: #000;
+  padding: 10px;
+  color: #fff;
+  text-align: center;
 }
