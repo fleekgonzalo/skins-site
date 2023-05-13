@@ -16,6 +16,8 @@
       position: fixed;
       top: 0;
       left: 0;
+      width: 100%;
+      height: 100%;
       z-index: -1;
     }
   </style>
@@ -94,7 +96,7 @@
     // Initialize WebGL renderer
     const renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
-    document.getElementById('webgl-canvas').appendChild(renderer.domElement);
+    document.body.appendChild(renderer.domElement);
 
     // Create scene
     const scene = new THREE.Scene();
