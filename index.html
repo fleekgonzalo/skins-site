@@ -69,7 +69,7 @@
     <h1>Counter-Strike Skins</h1>
   </header>
 
-  <main class="webgl-background">
+  <main>
     <section id="skins">
       <div class="skin-card">
         <img src="skin1.jpg" alt="Skin 1">
@@ -101,50 +101,41 @@
 
     const renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
-    document.body.appendChild(renderer.domElement);
+    document.body.insertBefore(renderer.domElement, document.body.firstChild);
 
-    const geometry = new THREE.PlaneGeometry(2, 2, 1, 1);
-    const material = new THREE.ShaderMaterial({
-      uniforms: {
-        u_time: { value: 0.0 }
-      },
-      vertexShader: `
-        varying vec2 vUv;
+    const vertexShader = `
+      varying vec2 vUv;
 
-        void main() {
+      void main() {
         vUv = uv;
-          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-        }
-      `,
-      fragmentShader: `
-        varying vec2 vUv;
-        uniform float u_time;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      }
+    `;
 
-        void main() {
-          vec2 p = -1.0 + 2.0 * vUv;
-          float amplitude = 0.1;
-          float frequency = 3.0;
-          float speed = 0.5;
+    const fragmentShader = `
+      varying vec2 vUv;
 
-          float x = p.x * frequency + u_time * speed;
-          float y = p.y * frequency + u_time * speed;
+      void main() {
+        gl_FragColor = vec4(vUv.x, vUv.y, 0.5, 1.0);
+      }
+    `;
 
-          float displacement = sin(x) * sin(y) * amplitude;
-
-          vec3 color = vec3(0.5) + vec3(displacement);
-
-          gl_FragColor = vec4(color, 1.0);
-        }
-      `
+    const geometry = new THREE.BoxGeometry(1, 1, 1);
+    const material = new THREE.ShaderMaterial({
+      vertexShader,
+      fragmentShader,
     });
 
-    const plane = new THREE.Mesh(geometry, material);
-    scene.add(plane);
+    const cube = new THREE.Mesh(geometry, material);
+    scene.add(cube);
 
     function animate() {
       requestAnimationFrame(animate);
+
+      cube.rotation.x += 0.01;
+      cube.rotation.y += 0.01;
+
       renderer.render(scene, camera);
-      material.uniforms.u_time.value += 0.01;
     }
 
     animate();
