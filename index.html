@@ -4,15 +4,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CS:GO Skin Emporium</title>
+  <title>Counter-Strike Skins</title>
   <link rel="stylesheet" href="styles.css">
   <style>
     body {
       margin: 0;
+      padding: 0;
       overflow: hidden;
     }
 
-    #webgl-canvas {
+    .webgl-background {
       position: fixed;
       top: 0;
       left: 0;
@@ -24,97 +25,46 @@
 </head>
 
 <body>
-  <canvas id="webgl-canvas"></canvas>
-
+  <div class="webgl-background"></div>
   <header>
-    <div class="header-top">
-      <div class="logo">
-        <img src="logo.png" alt="CS:GO Skin Emporium">
-      </div>
-      <div class="header-info">
-        <p>Free shipping on all orders over $100</p>
-      </div>
-    </div>
-    <nav>
-      <ul>
-        <li><a href="#home">Home</a></li>
-        <li><a href="#skins">Skins</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
-    </nav>
+    <h1>Counter-Strike Skins</h1>
   </header>
 
   <main>
-    <section id="home">
-      <h2>Welcome to the CS:GO Skin Emporium!</h2>
-      <p>Get the best CS:GO skins to enhance your gaming experience.</p>
-    </section>
-
     <section id="skins">
-      <h2>Featured Skins</h2>
       <div class="skin-card">
         <img src="skin1.jpg" alt="Skin 1">
-        <h3>AK-47 | Fire Serpent</h3>
-        <p>Rarity: Covert</p>
-        <p>Price: $150</p>
-        <button>Add to Cart</button>
+        <h3>AWP | Dragon Lore</h3>
+        <p>Rifle - Covert</p>
+        <p>Factory New</p>
+        <button>Buy Now</button>
       </div>
 
       <div class="skin-card">
         <img src="skin2.jpg" alt="Skin 2">
-        <h3>AWP | Dragon Lore</h3>
-        <p>Rarity: Covert</p>
-        <p>Price: $250</p>
-        <button>Add to Cart</button>
+        <h3>M4A4 | Howl</h3>
+        <p>Rifle - Covert</p>
+        <p>Minimal Wear</p>
+        <button>Buy Now</button>
       </div>
-
-      <!-- Add more skin cards here -->
-
-    </section>
-
-    <section id="about">
-      <h2>About Us</h2>
-      <p>We are a trusted marketplace for CS:GO skins. Our goal is to provide a seamless and secure platform for buying
-        and selling CS:GO skins.</p>
-    </section>
-
-    <section id="contact">
-      <h2>Contact Us</h2>
-      <p>If you have any questions or concerns, please reach out to us:</p>
-      <p>Email: info@csgoskinemporium.com</p>
-      <p>Phone: 123-456-7890</p>
     </section>
   </main>
 
-  <footer>
-    <p>&copy; 2023 CS:GO Skin Emporium. All rights reserved.</p>
-  </footer>
-
-  <script src="https://cdn.rawgit.com/mrdoob/three.js/r129/build/three.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/110/three.min.js"></script>
   <script>
-    // Initialize WebGL renderer
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.z = 5;
+
     const renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
 
-    // Create scene
-    const scene = new THREE.Scene();
-
-    // Create camera
-    const camera = new THREE.PerspectiveCamera(
-      75,
-      window.innerWidth / window.innerHeight,
-      0.1,
-      1000
-    );
-    camera.position.z = 5;
-
-    // Create lava lamp geometry
-    const geometry = new THREE.SphereGeometry(1, 64, 64);
-
-    // Create lava lamp material
+    const geometry = new THREE.PlaneGeometry(2, 2, 1, 1);
     const material = new THREE.ShaderMaterial({
+      uniforms: {
+        u_time: { value: 1.0 },
+      },
       vertexShader: `
         varying vec2 vUv;
 
@@ -125,33 +75,21 @@
       `,
       fragmentShader: `
         varying vec2 vUv;
+        uniform float u_time;
 
         void main() {
-          vec2 p = vUv * 4.0 - 2.0;
-          float d = length(p);
-          vec3 color = vec3(0.0);
-
-          if (d < 1.0) {
-            float power = 4.0;
-            float displacement = 1.0 - pow(d, power);
-            color = vec3(displacement);
-          }
-
-          gl_FragColor = vec4(color, 1.0);
+          gl_FragColor = vec4(vUv.x, vUv.y, abs(sin(u_time)), 1.0);
         }
       `,
     });
 
-    // Create lava lamp mesh
-    const lavaLamp = new THREE.Mesh(geometry, material);
-    scene.add(lavaLamp);
+    const plane = new THREE.Mesh(geometry, material);
+    scene.add(plane);
 
-    // Render loop
     function animate() {
       requestAnimationFrame(animate);
 
-      lavaLamp.rotation.x += 0.01;
-      lavaLamp.rotation.y += 0.01;
+      material.uniforms.u_time.value += 0.01;
 
       renderer.render(scene, camera);
     }
