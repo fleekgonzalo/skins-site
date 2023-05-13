@@ -51,6 +51,48 @@
       width: 100%;
       text-align: center;
     }
+
+    main {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      font-size: 24px;
+    }
+
+    .skin-card {
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 20px;
+      border-radius: 8px;
+      margin: 10px;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    .skin-card img {
+      max-width: 100%;
+      margin-bottom: 10px;
+    }
+
+    .skin-card h3 {
+      margin-top: 0;
+    }
+
+    .skin-card p {
+      margin-bottom: 5px;
+    }
+
+    .skin-card button {
+      background-color: #ff6600;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
   </style>
 </head>
 
@@ -120,21 +162,19 @@
       }
     `;
 
-    const geometry = new THREE.BoxGeometry(1, 1, 1);
     const material = new THREE.ShaderMaterial({
       vertexShader,
       fragmentShader,
     });
 
-    const cube = new THREE.Mesh(geometry, material);
-    scene.add(cube);
+    const geometry = new THREE.PlaneGeometry(2, 2);
+    const mesh = new THREE.Mesh(geometry, material);
+    scene.add(mesh);
 
     function animate() {
       requestAnimationFrame(animate);
-
-      cube.rotation.x += 0.01;
-      cube.rotation.y += 0.01;
-
+      mesh.rotation.x += 0.01;
+      mesh.rotation.y += 0.01;
       renderer.render(scene, camera);
     }
 
