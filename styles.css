@@ -11,6 +11,24 @@ header {
   padding: 20px;
 }
 
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.logo img {
+  height: 40px;
+}
+
+.header-info {
+  background-color: #555;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
 nav {
   background-color: #222;
   text-align: center;
@@ -57,6 +75,12 @@ h3 {
   border: 1px solid #ccc;
   border-radius: 5px;
   text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.skin-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
 }
 
 .skin-card img {
